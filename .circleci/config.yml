@@ -40,6 +40,10 @@ jobs:
       # run tests!
       #- run: mvn integration-test
       # Linter
-      - run: mvn checkstyle:check
+      - run: 
+          name: Linter
+          command: mvn checkstyle:check
       # Unit tests
-      - run: mvn test
+      - run: 
+          name: Unit tests
+          command: mvn test
