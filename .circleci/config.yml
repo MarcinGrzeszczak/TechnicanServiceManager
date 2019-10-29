@@ -39,4 +39,7 @@ jobs:
 
       # run tests!
       #- run: mvn integration-test
+      # Linter
+      - run: mvn checkstyle:check
+      # Unit tests
       - run: mvn test
