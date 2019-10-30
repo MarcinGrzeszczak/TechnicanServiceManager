@@ -37,13 +37,13 @@ class Person extends Entity {
     }
 
     @Override
-    public void save() {
+    public void serialize() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void load() {
+    public void deserialize() {
         // TODO Auto-generated method stub
 
     }
