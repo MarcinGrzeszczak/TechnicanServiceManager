@@ -8,18 +8,18 @@ class Device extends Entity {
     private String serialNumber;
     private List<HistoryEvent> history;
 
-    Device(){
+    Device() {
         super();
         String emptySerialNumber = "Empty serialnumber";
         this.init(emptySerialNumber);
     }
 
-    Device(long id, String name, String serialNumber){
+    Device(long id, String name, String serialNumber) {
         super(id, name);
         this.init(serialNumber);
     }
 
-    private void init(String serialNumber){
+    private void init(String serialNumber) {
         this.serialNumber = serialNumber;
         this.history = new ArrayList<>();
     }

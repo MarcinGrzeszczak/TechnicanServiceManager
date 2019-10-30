@@ -17,7 +17,6 @@ class HistoryEvent extends Entity {
         super();
         Date emptyAcceptanceDate = dateFormat.parse("1970-01-01");
         Date emptyDueDate = dateFormat.parse("1970-01-01"); 
-
         String emptyDescription = "empty description"; 
         String emptyIssue = "empty issue";
         this.init(emptyAcceptanceDate, emptyDueDate, emptyDescription, emptyIssue);
@@ -30,7 +29,7 @@ class HistoryEvent extends Entity {
         this.init(acceptanceDate, dueDate, description, issue);
     }
 
-    private void init(Date acceptanceDate, Date dueDate, String description, String issue){
+    private void init(Date acceptanceDate, Date dueDate, String description, String issue) {
         this.acceptanceDate = acceptanceDate;
         this.dueDate = dueDate;
         this.description = description;
