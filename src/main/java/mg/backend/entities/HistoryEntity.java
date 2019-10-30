@@ -64,16 +64,6 @@ class HistoryEntity extends Entity {
         this.issue = issue;
     }
 
-    public HistoryEvent acceptanceDate(Date acceptanceDate) {
-        this.acceptanceDate = acceptanceDate;
-        return this;
-    }
-
-    public HistoryEvent dueDate(Date dueDate) {
-        this.dueDate = dueDate;
-        return this;
-    }
-
     @Override
     public void serialize() {
         // TODO Auto-generated method stub
