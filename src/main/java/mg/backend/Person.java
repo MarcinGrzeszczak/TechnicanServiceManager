@@ -14,8 +14,8 @@ class Person extends Entity {
         this.init(emptyAddress);
     }
 
-    Person(long id, String name, String address) {
-        super(id, name);
+    Person(long id, String name, String address, String description) {
+        super(id, name, description);
         this.init(address);
     }
 

@@ -1,7 +1,9 @@
 package mg.backend;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 class HistoryEvent extends Entity {
     
@@ -9,31 +11,41 @@ class HistoryEvent extends Entity {
 
     private Date acceptanceDate;
     private Date dueDate;
-    private String description;
     private String issue;
-
+    private List<Cost> costs;
    
     public HistoryEvent() throws Exception {
         super();
         Date emptyAcceptanceDate = dateFormat.parse("1970-01-01");
         Date emptyDueDate = dateFormat.parse("1970-01-01"); 
-        String emptyDescription = "empty description"; 
         String emptyIssue = "empty issue";
-        this.init(emptyAcceptanceDate, emptyDueDate, emptyDescription, emptyIssue);
+        this.init(emptyAcceptanceDate, emptyDueDate, emptyIssue);
     }
 
     public HistoryEvent(long id, String name, Date acceptanceDate, 
         Date dueDate, String description, String issue) {
 
-        super(id, name);
-        this.init(acceptanceDate, dueDate, description, issue);
+        super(id, name, description);
+        this.init(acceptanceDate, dueDate, issue);
     }
 
-    private void init(Date acceptanceDate, Date dueDate, String description, String issue) {
+    private void init(Date acceptanceDate, Date dueDate, String issue) {
         this.acceptanceDate = acceptanceDate;
         this.dueDate = dueDate;
-        this.description = description;
         this.issue = issue;
+        this.costs = new ArrayList<>();
+    }
+
+    public List<Cost> getCosts() {
+        return costs;
+    }
+
+    public void setCosts(List<Cost> costs) {
+        this.costs = costs;
+    }
+
+    public double finalCost() {
+        return this.costs.stream().mapToDouble(cost -> cost.bruttPrice()).sum();
     }
 
     public Date getAcceptanceDate() {

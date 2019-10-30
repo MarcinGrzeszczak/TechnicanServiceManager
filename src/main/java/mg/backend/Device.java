@@ -7,15 +7,15 @@ class Device extends Entity {
 
     private String serialNumber;
     private List<HistoryEvent> history;
-
+    
     Device() {
         super();
         String emptySerialNumber = "Empty serialnumber";
         this.init(emptySerialNumber);
     }
 
-    Device(long id, String name, String serialNumber) {
-        super(id, name);
+    Device(long id, String name, String serialNumber, String description) {
+        super(id, name, description);
         this.init(serialNumber);
     }
 
