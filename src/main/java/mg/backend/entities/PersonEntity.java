@@ -1,27 +1,22 @@
-package mg.backend;
+package mg.backend.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-class Person extends Entity {
+class PersonEntity extends Entity {
 
     private String address;
-    private List<Device> devices;
     
-    Person() {
+    PersonEntity() {
         super();
         String emptyAddress = "empty Address";
         this.init(emptyAddress);
     }
 
-    Person(long id, String name, String address, String description) {
+    PersonEntity(long id, String name, String address, String description) {
         super(id, name, description);
         this.init(address);
     }
 
     private void init(String address) {
         this.address = address;
-        this.devices = new ArrayList<Device>();
     }
 
     public String getAddress() {
@@ -30,10 +25,6 @@ class Person extends Entity {
 
     public void setAddress(String address) {
         this.address = address;
-    }
-
-    public List<Device> getDevices() {
-        return this.devices;
     }
 
     @Override

@@ -1,4 +1,4 @@
-package mg.backend;
+package mg.backend.entities;
 
 import mg.backend.database.DatabaseContract;
 

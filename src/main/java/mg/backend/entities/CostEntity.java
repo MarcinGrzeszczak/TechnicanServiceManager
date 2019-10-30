@@ -1,13 +1,13 @@
-package mg.backend;
+package mg.backend.entities;
 
-class Cost extends Entity {
+public class CostEntity extends Entity {
 
     private double price;
     private double discount;
     private double vat;
 
 
-    public Cost() {
+    public CostEntity() {
         super();
         double initPrice = 0;
         double initVat = 23;
@@ -15,7 +15,7 @@ class Cost extends Entity {
         this.init(initPrice, initVat, initDiscount);
     }
 
-    public Cost(long id, String name, double price, 
+    public CostEntity(long id, String name, double price, 
         double vat, double discount, String description) {
 
         super(id, name, description);
