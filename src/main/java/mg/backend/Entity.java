@@ -4,6 +4,11 @@ abstract class Entity implements DatabaseContract {
     protected String name;
     protected long id;
     
+    Entity() {
+        this.name = "Empty name";
+        this.id = -1;
+    }
+
     Entity(long id, String name) {
         this.name = name;
         this.id = id;
