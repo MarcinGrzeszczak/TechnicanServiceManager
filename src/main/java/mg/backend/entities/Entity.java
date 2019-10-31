@@ -1,8 +1,6 @@
 package mg.backend.entities;
 
-import mg.backend.database.DatabaseContract;
-
-abstract class Entity implements DatabaseContract {
+abstract class Entity {
     protected String name;
     protected long id;
     protected String description;

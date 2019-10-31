@@ -54,19 +54,6 @@ public class CostEntity extends Entity {
         return 0;
     }
 
-
-    @Override
-    public void serialize() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void deserialize() {
-        // TODO Auto-generated method stub
-
-    }
-
     @Override
     String show() {
         // TODO Auto-generated method stub

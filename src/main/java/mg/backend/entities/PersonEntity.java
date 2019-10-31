@@ -28,18 +28,6 @@ class PersonEntity extends Entity {
     }
 
     @Override
-    public void serialize() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void deserialize() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     String show() {
         // TODO Auto-generated method stub
         return null;

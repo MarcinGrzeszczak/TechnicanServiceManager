@@ -26,19 +26,7 @@ public class DeviceEntity extends Entity {
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
-
-    @Override
-    public void serialize() {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void deserialize() {
-        // TODO Auto-generated method stub
-
-    }
-
+    
     @Override
     String show() {
         // TODO Auto-generated method stub
