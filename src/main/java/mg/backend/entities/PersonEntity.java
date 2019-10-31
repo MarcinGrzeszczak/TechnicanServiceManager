@@ -1,16 +1,20 @@
 package mg.backend.entities;
 
-class PersonEntity extends Entity {
+public class PersonEntity extends Entity {
 
     private String address;
     
-    PersonEntity() {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public PersonEntity() {
         super();
         String emptyAddress = "empty Address";
         this.init(emptyAddress);
     }
 
-    PersonEntity(long id, String name, String address, String description) {
+    private PersonEntity(long id, String name, String address, String description) {
         super(id, name, description);
         this.init(address);
     }
@@ -33,4 +37,35 @@ class PersonEntity extends Entity {
         return null;
     }
 
+
+    public static class Builder {
+        private long id; 
+        private String name;
+        private String address; 
+        private String description;
+        
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setAddress(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public PersonEntity build() {
+            return new PersonEntity(this.id, this.name, this.address, this.description);
+        }
+    }
 }
