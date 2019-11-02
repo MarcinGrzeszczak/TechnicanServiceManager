@@ -1,7 +1,10 @@
 package mg.backend.database;
 
+import java.sql.ResultSet;
+
 public interface DatabaseContract {
-    void serialize();
     
-    void deserialize();
+    public void serialize();
+
+    void deserialize(ResultSet data);
 }

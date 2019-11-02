@@ -1,20 +1,25 @@
 package mg.backend.entities;
 
-public class PersonEntity extends Entity {
+import java.sql.ResultSet;
 
-    private String address;
+public class PersonEntity extends Entity {
     
-    public static Builder builder() {
-        return new Builder();
+    public static String TABLE_NAME = "CLIENTS";
+    private String address;
+
+    public static PersonEntity build(ResultSet data) {
+        PersonEntity newPerson = new PersonEntity();
+        newPerson.deserialize(data);
+        return newPerson;
     }
 
-    public PersonEntity() {
+    private PersonEntity() {
         super();
         String emptyAddress = "empty Address";
         this.init(emptyAddress);
     }
 
-    private PersonEntity(long id, String name, String address, String description) {
+    public PersonEntity(long id, String name, String address, String description) {
         super(id, name, description);
         this.init(address);
     }
@@ -37,35 +42,15 @@ public class PersonEntity extends Entity {
         return null;
     }
 
+    @Override
+    public void serialize() {
+        // TODO Auto-generated method stub
 
-    public static class Builder {
-        private long id; 
-        private String name;
-        private String address; 
-        private String description;
-        
-        public Builder setId(long id) {
-            this.id = id;
-            return this;
-        }
+    }
 
-        public Builder setName(String name) {
-            this.name = name;
-            return this;
-        }
+    @Override
+    public void deserialize(ResultSet data) {
+        // TODO Auto-generated method stub
 
-        public Builder setAddress(String address) {
-            this.address = address;
-            return this;
-        }
-
-        public Builder setDescription(String description) {
-            this.description = description;
-            return this;
-        }
-
-        public PersonEntity build() {
-            return new PersonEntity(this.id, this.name, this.address, this.description);
-        }
     }
 }

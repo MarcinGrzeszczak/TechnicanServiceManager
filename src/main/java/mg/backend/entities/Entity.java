@@ -1,9 +1,13 @@
 package mg.backend.entities;
 
-abstract class Entity {
+import mg.backend.database.DatabaseContract;
+
+abstract class Entity implements DatabaseContract {
     protected String name;
     protected long id;
     protected String description;
+    
+    public String tableName;
 
     Entity() {
         this.name = "Empty name";
