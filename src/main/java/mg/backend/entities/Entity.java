@@ -4,7 +4,7 @@ import mg.backend.database.DatabaseContract;
 
 abstract class Entity implements DatabaseContract {
     protected String name;
-    protected long id;
+    protected int id;
     protected String description;
     
     public String tableName;
@@ -15,7 +15,7 @@ abstract class Entity implements DatabaseContract {
         this.id = -1;
     }
 
-    Entity(long id, String name, String description) {
+    Entity(int id, String name, String description) {
         this.name = name;
         this.id = id;
         this.description = description;
@@ -41,7 +41,7 @@ abstract class Entity implements DatabaseContract {
         return this.id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

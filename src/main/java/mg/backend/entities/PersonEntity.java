@@ -13,13 +13,13 @@ public class PersonEntity extends Entity {
         return newPerson;
     }
 
-    private PersonEntity() {
+    public PersonEntity() {
         super();
         String emptyAddress = "empty Address";
         this.init(emptyAddress);
     }
 
-    public PersonEntity(long id, String name, String address, String description) {
+    public PersonEntity(int id, String name, String address, String description) {
         super(id, name, description);
         this.init(address);
     }
@@ -32,14 +32,21 @@ public class PersonEntity extends Entity {
         return address;
     }
 
+    
+    public void setId(Integer id){
+        super.setId(id);
+    }
+
     public void setAddress(String address) {
         this.address = address;
     }
 
     @Override
-    String show() {
+    public String show() {
         // TODO Auto-generated method stub
-        return null;
+        return "id: " + this.id + "\n"
+        + "name: " + this.name + "\n"
+        + "address: "+ this.address + "\n";
     }
 
     @Override
