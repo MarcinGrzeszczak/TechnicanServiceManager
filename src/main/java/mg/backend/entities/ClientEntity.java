@@ -2,25 +2,20 @@ package mg.backend.entities;
 
 import java.sql.ResultSet;
 
-public class PersonEntity extends Entity {
-    
-    public static String TABLE_NAME = "CLIENTS";
+public class ClientEntity extends Entity {
+
+    public static String TABLE_NAME = "clients";
+
     private String address;
 
-    public static PersonEntity build(ResultSet data) {
-        PersonEntity newPerson = new PersonEntity();
-        newPerson.deserialize(data);
-        return newPerson;
-    }
-
-    private PersonEntity() {
-        super();
+    private ClientEntity() {
+        super(TABLE_NAME);
         String emptyAddress = "empty Address";
         this.init(emptyAddress);
     }
 
-    public PersonEntity(long id, String name, String address, String description) {
-        super(id, name, description);
+    public ClientEntity(long id, String name, String address, String description) {
+        super(TABLE_NAME, id, name, description);
         this.init(address);
     }
 
@@ -44,13 +39,11 @@ public class PersonEntity extends Entity {
 
     @Override
     public void serialize() {
-        // TODO Auto-generated method stub
 
     }
 
     @Override
     public void deserialize(ResultSet data) {
-        // TODO Auto-generated method stub
-
+        
     }
 }

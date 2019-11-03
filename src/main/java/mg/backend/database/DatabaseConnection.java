@@ -50,10 +50,14 @@ public class DatabaseConnection {
         }
     }
 
-    public void requestQuery() throws SQLException {
+    public void sendQuery(String query,DatabaseCallback callback) throws SQLException {
         Statement st = this.connection.createStatement();
         ResultSet rs = st.executeQuery("SELECT * FROM clients");
-        System.out.println(rs.toString());
+        while (rs.next()) {
+            callback.run(rs);
+        }
+        
+        rs.close();
         st.close();
 
     }

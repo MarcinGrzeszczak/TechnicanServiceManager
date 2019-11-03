@@ -3,22 +3,29 @@ package mg.backend.entities;
 import mg.backend.database.DatabaseContract;
 
 abstract class Entity implements DatabaseContract {
+
     protected String name;
     protected long id;
     protected String description;
     
-    public String tableName;
+    private String tableName;
 
-    Entity() {
+    Entity(String tableName) {
+        this.tableName = tableName;
         this.name = "Empty name";
         this.description = "Empty description";
         this.id = -1;
     }
 
-    Entity(long id, String name, String description) {
+    Entity(String tableName,long id, String name, String description) {
+        this.tableName = tableName;
         this.name = name;
         this.id = id;
         this.description = description;
+    }
+
+    String getTableName() {
+        return this.tableName;
     }
 
     public String getDescription() {
@@ -46,6 +53,5 @@ abstract class Entity implements DatabaseContract {
     }
 
     abstract String show();
-
 
 }
