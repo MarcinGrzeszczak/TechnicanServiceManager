@@ -1,26 +1,35 @@
 package mg.backend.entities;
 
-import java.sql.ResultSet;
-
 public class ClientEntity extends Entity {
 
-    public static String TABLE_NAME = "clients";
-
     private String address;
+    private String firstName;
+    private String surname;
+    private String email;
+    private String phone;
 
-    private ClientEntity() {
-        super(TABLE_NAME);
-        String emptyAddress = "empty Address";
-        this.init(emptyAddress);
+    public ClientEntity() {
+        
+        super();
+        String empty = "empty Address";
+        this.init(empty,empty,empty,empty,empty,empty);
     }
 
-    public ClientEntity(long id, String name, String address, String description) {
-        super(TABLE_NAME, id, name, description);
-        this.init(address);
+    private ClientEntity(long id, String firstName, String surname, 
+        String address, String email, String phone, String description) {
+        
+        super(id, firstName +  " " + surname, description);
+        this.init(firstName, surname, address, email, phone, description);
     }
 
-    private void init(String address) {
+    private void init(String firstName, String surname, 
+        String address, String email, String phone, String description) {
+        this.firstName = firstName;
+        this.surname = surname;  
         this.address = address;
+        this.email = email;
+        this.phone = phone;
+        this.description = description;
     }
 
     public String getAddress() {
@@ -31,19 +40,122 @@ public class ClientEntity extends Entity {
         this.address = address;
     }
 
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getSurname() {
+        return this.surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return this.phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public ClientEntity address(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public ClientEntity firstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public ClientEntity surname(String surname) {
+        this.surname = surname;
+        return this;
+    }
+
+    public ClientEntity email(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public ClientEntity phone(String phone) {
+        this.phone = phone;
+        return this;
+    }
+
     @Override
     String show() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
-    public void serialize() {
-
-    }
-
-    @Override
-    public void deserialize(ResultSet data) {
+    public static class Builder {
+        long id; 
+        String name; 
+        String surname;
+        String address; 
+        String email;
+        String phone;
+        String description;
         
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setSurname(String surname) {
+            this.surname = surname;
+            return this;
+        }
+
+        public Builder setAddress(String address) {
+            this.address = address;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public ClientEntity build() {
+            return new ClientEntity(
+                    this.id, 
+                    this.name, 
+                    this.surname, 
+                    this.address, 
+                    this.email, 
+                    this.phone,
+                    this.description);
+        }
     }
 }
