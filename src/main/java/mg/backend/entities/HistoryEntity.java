@@ -1,20 +1,21 @@
 package mg.backend.entities;
 
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 class HistoryEntity extends Entity {
-    
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final String TABLE_NAME = "history";
     private Date acceptanceDate;
     private Date dueDate;
     private String issue;
-   
+
     public HistoryEntity() throws Exception {
-        super();
+        super(TABLE_NAME);
         Date emptyAcceptanceDate = dateFormat.parse("1970-01-01");
-        Date emptyDueDate = dateFormat.parse("1970-01-01"); 
+        Date emptyDueDate = dateFormat.parse("1970-01-01");
         String emptyIssue = "empty issue";
         this.init(emptyAcceptanceDate, emptyDueDate, emptyIssue);
     }
@@ -22,7 +23,7 @@ class HistoryEntity extends Entity {
     public HistoryEntity(long id, String name, Date acceptanceDate, 
         Date dueDate, String description, String issue) {
 
-        super(id, name, description);
+        super(TABLE_NAME, id, name, description);
         this.init(acceptanceDate, dueDate, issue);
     }
 
@@ -68,6 +69,18 @@ class HistoryEntity extends Entity {
     String show() {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    @Override
+    public void serialize() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void deserialize(ResultSet data) {
+        // TODO Auto-generated method stub
+
     }
 
 }
