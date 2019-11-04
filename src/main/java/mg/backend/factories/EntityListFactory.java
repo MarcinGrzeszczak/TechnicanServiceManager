@@ -7,7 +7,7 @@ import java.util.List;
 import mg.backend.database.DatabaseConnection;
 import mg.backend.entities.Entity;
 
-public class EntityListFactory<T extends TableFactory, E extends Entity> {
+public class EntityListFactory<T extends TableFactory<E>, E extends Entity> {
     private DatabaseConnection databaseConnection;
     private T entityFactory;
 
@@ -24,7 +24,7 @@ public class EntityListFactory<T extends TableFactory, E extends Entity> {
             "SELECT * FROM" + this.entityFactory.getTableName(), (data) -> {
                 try {
                     this.entityFactory.deserialize(data);
-                    entityList.add((E) this.entityFactory.getEntity());
+                    entityList.add(this.entityFactory.getEntity());
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
