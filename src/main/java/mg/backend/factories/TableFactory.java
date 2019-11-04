@@ -5,6 +5,7 @@ import mg.backend.database.DatabaseContract;
 public abstract class TableFactory<T> implements DatabaseContract {
     
     private String tableName;
+    protected T entity;
 
     public TableFactory(String tableName) {
         this.tableName = tableName;
@@ -14,5 +15,7 @@ public abstract class TableFactory<T> implements DatabaseContract {
         return tableName;
     }
     
-    public abstract T getEntity();
+    public T getEntity() {
+        return this.entity;
+    }
 }

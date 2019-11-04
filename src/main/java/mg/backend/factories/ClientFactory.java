@@ -8,20 +8,13 @@ import mg.backend.entities.ClientEntity;
 public class ClientFactory extends TableFactory<ClientEntity> {
     private static final String TABLE_NAME = "clients";
     
-    private ClientEntity entity;
-    
     public ClientFactory() {
         super(TABLE_NAME);
     }
 
     @Override
-    public ClientEntity getEntity() {
-        return this.entity;
-    }
-
-    @Override
     public void deserialize(ResultSet data) throws SQLException {
-        this.entity = ClientEntity.builder()
+        super.entity = ClientEntity.builder()
             .setId(data.getInt(1))
             .setFirstName(data.getString(2))
             .setSurname(data.getString(3))

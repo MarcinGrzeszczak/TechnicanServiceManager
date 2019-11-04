@@ -72,32 +72,39 @@ public class CostEntity extends Entity {
         private double discount; 
         private String description;
 
-        public void setId(long id) {
+        public Builder setId(long id) {
             this.id = id;
+            return this;
         }
 
-        public void setParentId(long pid) {
+        public Builder setParentId(long pid) {
             this.parentId = pid;
+            return this;
         }
 
-        public void setName(String name) {
+        public Builder setName(String name) {
             this.name = name;
+            return this;
         }
 
-        public void setPrice(double price) {
+        public Builder setPrice(double price) {
             this.price = price;
+            return this;
         }
 
-        public void setVat(double vat) {
+        public Builder setVat(double vat) {
             this.vat = vat;
+            return this;
         }
 
-        public void setDiscount(double discount) {
+        public Builder setDiscount(double discount) {
             this.discount = discount;
+            return this;
         }
 
-        public void setDescription(String description) {
+        public Builder setDescription(String description) {
             this.description = description;
+            return this;
         }
 
         public CostEntity build() {
