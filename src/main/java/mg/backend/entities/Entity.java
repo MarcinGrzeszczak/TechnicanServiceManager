@@ -1,31 +1,23 @@
 package mg.backend.entities;
 
-import mg.backend.database.DatabaseContract;
-
-abstract class Entity implements DatabaseContract {
+public abstract class Entity {
 
     protected String name;
     protected long id;
+    protected long parentId;
     protected String description;
     
-    private String tableName;
-
-    Entity(String tableName) {
-        this.tableName = tableName;
+    public Entity() {
         this.name = "Empty name";
         this.description = "Empty description";
         this.id = -1;
     }
 
-    Entity(String tableName,long id, String name, String description) {
-        this.tableName = tableName;
+    public Entity(long id, long parentId, String name, String description) {
         this.name = name;
         this.id = id;
+        this.parentId = parentId;
         this.description = description;
-    }
-
-    String getTableName() {
-        return this.tableName;
     }
 
     public String getDescription() {
@@ -52,6 +44,14 @@ abstract class Entity implements DatabaseContract {
         this.id = id;
     }
 
-    abstract String show();
+    public void setParentId(long parentId) {
+        this.parentId = parentId;
+    }
+
+    public long getParentId() {
+        return parentId;
+    }
+    
+    public abstract String show();
 
 }

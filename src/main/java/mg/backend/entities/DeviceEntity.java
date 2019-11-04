@@ -1,26 +1,30 @@
 package mg.backend.entities;
 
-import java.sql.ResultSet;
-
 public class DeviceEntity extends Entity {
-    private static final String TABLE_NAME = "devices";
 
     private String serialNumber;
 
-    DeviceEntity() {
-        super(TABLE_NAME);
+    public DeviceEntity() {
+        super();
         String emptySerialNumber = "Empty serialnumber";
         this.init(emptySerialNumber);
     }
 
-    DeviceEntity(long id, String name, String serialNumber, String description) {
-        super(TABLE_NAME, id, name, description);
+    private DeviceEntity(long id, long parentId, 
+        String name, String serialNumber, String description) {
+
+        super(id, parentId, name, description);
         this.init(serialNumber);
     }
 
     private void init(String serialNumber) {
         this.serialNumber = serialNumber;
     }
+
+    public static Builder builder() {
+        return new DeviceEntity.Builder();
+    }
+
 
     public String getSerialNumber() {
         return serialNumber;
@@ -31,20 +35,47 @@ public class DeviceEntity extends Entity {
     }
 
     @Override
-    String show() {
+    public String show() {
         // TODO Auto-generated method stub
         return null;
     }
 
-    @Override
-    public void serialize() {
-        // TODO Auto-generated method stub
+    public static class Builder {
+        private long id; 
+        private long parentId;
+        private String name; 
+        private String serialNumber;
+        private String description;
 
+        public Builder setId(long id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setParentId(long parentId) {
+            this.parentId = parentId;
+            return this;
+        }
+
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder setSerialNumber(String serialNumber) {
+            this.serialNumber = serialNumber;
+            return this;
+        }
+
+        public Builder setDescription(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public DeviceEntity build() {
+            return new DeviceEntity(this.id, this.parentId, 
+                this.name, this.serialNumber, this.description);
+        }
     }
 
-    @Override
-    public void deserialize(ResultSet data) {
-        // TODO Auto-generated method stub
-
-    }
 }

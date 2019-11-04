@@ -15,10 +15,10 @@ public class ClientEntity extends Entity {
         this.init(empty,empty,empty,empty,empty,empty);
     }
 
-    private ClientEntity(long id, String firstName, String surname, 
+    private ClientEntity(long id, long parentId, String firstName, String surname, 
         String address, String email, String phone, String description) {
         
-        super(id, firstName +  " " + surname, description);
+        super(id, parentId, firstName +  " " + surname, description);
         this.init(firstName, surname, address, email, phone, description);
     }
 
@@ -30,6 +30,10 @@ public class ClientEntity extends Entity {
         this.email = email;
         this.phone = phone;
         this.description = description;
+    }
+
+    public static Builder builder() {
+        return new ClientEntity.Builder();
     }
 
     public String getAddress() {
@@ -98,14 +102,19 @@ public class ClientEntity extends Entity {
     }
 
     @Override
-    String show() {
-        // TODO Auto-generated method stub
-        return null;
+    public String show() {
+        return "id: " + this.id + "\n"
+            + "first name: " + this.firstName + "\n"
+            + "last name: " + this.surname + "\n" 
+            + "address: " + this.address + "\n" 
+            + "email: " + this.email + "\n"
+            + "phone: " + this.phone + "\n";
     }
 
     public static class Builder {
         long id; 
-        String name; 
+        long parentId;
+        String firstName; 
         String surname;
         String address; 
         String email;
@@ -117,8 +126,13 @@ public class ClientEntity extends Entity {
             return this;
         }
 
-        public Builder setName(String name) {
-            this.name = name;
+        public Builder setParentId(long pid) {
+            this.parentId = pid;
+            return this;
+        }
+
+        public Builder setFirstName(String name) {
+            this.firstName = name;
             return this;
         }
 
@@ -149,8 +163,9 @@ public class ClientEntity extends Entity {
 
         public ClientEntity build() {
             return new ClientEntity(
-                    this.id, 
-                    this.name, 
+                    this.id,
+                    this.parentId, 
+                    this.firstName, 
                     this.surname, 
                     this.address, 
                     this.email, 

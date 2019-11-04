@@ -39,7 +39,7 @@ public class DatabaseConnection {
             + this.host + "/" + this.database 
             + "?user=" + this.username 
             + "&password=" + this.password 
-            + "&ssl=true";
+            + "&ssl=false";
 
         this.connection = DriverManager.getConnection(url);
     }
