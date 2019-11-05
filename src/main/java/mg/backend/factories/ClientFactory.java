@@ -3,9 +3,10 @@ package mg.backend.factories;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import mg.backend.datastructure.ClientHierarchy;
 import mg.backend.entities.ClientEntity;
 
-public class ClientFactory extends TableFactory<ClientEntity> {
+public class ClientFactory extends TableFactory<ClientEntity, ClientHierarchy> {
     private static final String TABLE_NAME = "clients";
     
     public ClientFactory() {
@@ -27,5 +28,10 @@ public class ClientFactory extends TableFactory<ClientEntity> {
     @Override
     public void serialize() {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    public ClientHierarchy getHierarchy() {
+        return new ClientHierarchy(super.entity, null);
     }
 }

@@ -2,7 +2,7 @@ package mg.backend.factories;
 
 import mg.backend.database.DatabaseContract;
 
-public abstract class TableFactory<T> implements DatabaseContract {
+public abstract class TableFactory<T, H> implements DatabaseContract {
     
     private String tableName;
     protected T entity;
@@ -18,4 +18,6 @@ public abstract class TableFactory<T> implements DatabaseContract {
     public T getEntity() {
         return this.entity;
     }
+
+    public abstract H getHierarchy();
 }

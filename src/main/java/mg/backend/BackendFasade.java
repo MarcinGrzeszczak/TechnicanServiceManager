@@ -6,58 +6,109 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import mg.backend.database.DatabaseConnection;
+import mg.backend.datastructure.ClientHierarchy;
+import mg.backend.datastructure.CostsHierarchy;
+import mg.backend.datastructure.DeviceHierarchy;
+import mg.backend.datastructure.Hierarchy;
+import mg.backend.datastructure.HistoryHierarchy;
+import mg.backend.datastructure.RootHierarchy;
 import mg.backend.entities.ClientEntity;
 import mg.backend.entities.CostEntity;
 import mg.backend.entities.DeviceEntity;
 import mg.backend.entities.HistoryEntity;
 import mg.backend.factories.ClientFactory;
 import mg.backend.factories.CostFactory;
+import mg.backend.factories.DataStructureFactory;
 import mg.backend.factories.DeviceFactory;
-import mg.backend.factories.EntityListFactory;
 import mg.backend.factories.HistoryFactory;
 
 public class BackendFasade {
     final String config = "resources/config.properties";
 
-    private DatabaseConnection dbConn;
+    private DataStructureFactory<ClientFactory, ClientHierarchy> clientsFactory;
+    private DataStructureFactory<DeviceFactory, DeviceHierarchy> devicesFactory;
+    private DataStructureFactory<HistoryFactory, HistoryHierarchy> historyFactory;
+    private DataStructureFactory<CostFactory, CostsHierarchy> costsFactory;
 
-    private EntityListFactory<ClientFactory, ClientEntity> clientsFactory;
-    private EntityListFactory<DeviceFactory, DeviceEntity> devicesFactory;
-    private EntityListFactory<HistoryFactory, HistoryEntity> historyFactory;
-    private EntityListFactory<CostFactory, CostEntity> costsFactory;
-    
-    private List<ClientEntity> clients;
-    private List<DeviceEntity> devices;
-    private List<HistoryEntity> history;
-    private List<CostEntity> costs;
+    private RootHierarchy structureRoot;
+    private DatabaseConnection databaseConnection;
 
-    public BackendFasade() {
+    public BackendFasade() throws IOException, SQLException {
+
+        this.initConnection();
+
+        this.structureRoot = new RootHierarchy(null, null);
 
         this.clientsFactory = 
-            new EntityListFactory<>(new ClientFactory(), dbConn);
-        
+            new DataStructureFactory<>(new ClientFactory(), this.databaseConnection);
+
         this.devicesFactory = 
-            new EntityListFactory<DeviceFactory,DeviceEntity>(new DeviceFactory(), dbConn);
+            new DataStructureFactory<>(new DeviceFactory(), this.databaseConnection);
 
-        this.historyFactory =
-            new EntityListFactory<HistoryFactory,HistoryEntity>(new HistoryFactory(), dbConn);
-        
-        this.costsFactory =
-            new EntityListFactory<CostFactory,CostEntity>(new CostFactory(), dbConn);
+        this.historyFactory = 
+            new DataStructureFactory<>(new HistoryFactory(), this.databaseConnection);
 
+        this.costsFactory = 
+            new DataStructureFactory<>(new CostFactory(), this.databaseConnection);
     }
 
-    public void initConnection() throws IOException, SQLException {
-        dbConn = new DatabaseConnection(this.config);
-
-        
-
-        System.out.println(clients.stream()
-            .map((data) -> data.show())
-            .collect(Collectors.joining("\n")));
+    private void initConnection() throws IOException, SQLException {
+        this.databaseConnection = new DatabaseConnection(this.config);
     }
 
-    public void loadClients() throws SQLException {
-        this.clients = this.clientsFactory.createList();
+    public List<ClientEntity> loadAllClients() throws SQLException {
+        if (this.structureRoot.getChilds() == null) {
+            this.structureRoot
+                    .setChilds(this.clientsFactory.generateEntities());
+        }
+
+        return this.structureRoot.getChilds().stream()
+                .map(Hierarchy::getData)
+                .collect(Collectors.toList());
+    }
+
+    public List<DeviceEntity> loadDevices(long clientId) throws SQLException {
+        if (this.structureRoot.getChildByID(clientId).getChilds() == null) {
+            this.structureRoot.getChildByID(clientId)
+                .setChilds(this.devicesFactory.generateEntities());
+        }
+
+        return this.structureRoot.getChildByID(clientId).getChilds().stream()
+                .map(Hierarchy::getData)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<HistoryEntity> loadHistory(long clientId, long deviceId) throws SQLException {
+        if (this.structureRoot.getChildByID(clientId).getChildByID(deviceId).getChilds() == null) {
+            this.structureRoot.getChildByID(clientId).getChildByID(deviceId)
+                    .setChilds(this.historyFactory.generateEntities());
+        }
+
+        return this.structureRoot.getChildByID(clientId).getChildByID(deviceId).getChilds().stream()
+                .map(Hierarchy::getData)
+                .collect(Collectors.toList());
+    }
+
+    public List<CostEntity> loadCosts(long clientId, 
+        long deviceId, long historyId) throws SQLException {
+
+        if (this.structureRoot
+            .getChildByID(clientId)
+            .getChildByID(deviceId)
+            .getChildByID(historyId)
+            .getChilds() == null) {
+
+            this.structureRoot.getChildByID(clientId).getChildByID(deviceId).getChildByID(historyId)
+                    .setChilds(this.costsFactory.generateEntities());
+        }
+
+        return this.structureRoot
+            .getChildByID(clientId)
+            .getChildByID(deviceId)
+            .getChildByID(historyId)
+            .getChilds().stream()
+                .map(Hierarchy::getData)
+                .collect(Collectors.toList());
     }
 }

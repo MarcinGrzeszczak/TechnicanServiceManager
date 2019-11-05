@@ -3,9 +3,10 @@ package mg.backend.factories;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import mg.backend.datastructure.CostsHierarchy;
 import mg.backend.entities.CostEntity;
 
-public class CostFactory extends TableFactory<CostEntity> {
+public class CostFactory extends TableFactory<CostEntity, CostsHierarchy> {
     private static final String TABLE_NAME = "costs";
 
 
@@ -32,5 +33,10 @@ public class CostFactory extends TableFactory<CostEntity> {
             .setDescription(data.getString(7))
             .build();
 
-    }    
+    }
+
+    @Override
+    public CostsHierarchy getHierarchy() {
+        return new CostsHierarchy(super.entity);
+    }
 }

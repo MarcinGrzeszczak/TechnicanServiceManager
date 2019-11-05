@@ -3,9 +3,10 @@ package mg.backend.factories;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import mg.backend.datastructure.HistoryHierarchy;
 import mg.backend.entities.HistoryEntity;
 
-public class HistoryFactory extends TableFactory<HistoryEntity> {
+public class HistoryFactory extends TableFactory<HistoryEntity, HistoryHierarchy> {
     private static final String TABLE_NAME = "history";
 
     public HistoryFactory() {
@@ -31,4 +32,8 @@ public class HistoryFactory extends TableFactory<HistoryEntity> {
         
     }
 
+    @Override
+    public HistoryHierarchy getHierarchy() {
+        return new HistoryHierarchy(super.entity, null);
+    }
 }

@@ -3,9 +3,10 @@ package mg.backend.factories;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import mg.backend.datastructure.DeviceHierarchy;
 import mg.backend.entities.DeviceEntity;
 
-public class DeviceFactory extends TableFactory<DeviceEntity> {
+public class DeviceFactory extends TableFactory<DeviceEntity, DeviceHierarchy> {
     private static final String TABLE_NAME = "devices";
 
     public DeviceFactory() {
@@ -28,5 +29,9 @@ public class DeviceFactory extends TableFactory<DeviceEntity> {
             .setDescription(data.getString(4))
             .build();
     }
-    
+
+    @Override
+    public DeviceHierarchy getHierarchy() {
+        return new DeviceHierarchy(super.entity,null);
+    }
 }
