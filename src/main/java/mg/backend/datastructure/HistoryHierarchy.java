@@ -1,8 +1,8 @@
 package mg.backend.datastructure;
 
-import mg.backend.entities.HistoryEntity;
-
 import java.util.List;
+
+import mg.backend.entities.HistoryEntity;
 
 public class HistoryHierarchy extends Hierarchy<HistoryEntity, CostsHierarchy> {
 

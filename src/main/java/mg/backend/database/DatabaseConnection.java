@@ -52,11 +52,12 @@ public class DatabaseConnection {
 
     public void sendQuery(String query,DatabaseCallback callback) throws SQLException {
         Statement st = this.connection.createStatement();
-        ResultSet rs = st.executeQuery("SELECT * FROM clients");
-        while (rs.next()) {
-            callback.run(rs);
+        ResultSet rs = st.executeQuery(query);
+        if (callback != null) {
+            while (rs.next()) {
+                callback.run(rs);
+            }
         }
-        
         rs.close();
         st.close();
 

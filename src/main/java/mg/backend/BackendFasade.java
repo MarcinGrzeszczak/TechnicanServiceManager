@@ -3,6 +3,7 @@ package mg.backend;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import mg.backend.database.DatabaseConnection;
@@ -33,9 +34,15 @@ public class BackendFasade {
     private RootHierarchy structureRoot;
     private DatabaseConnection databaseConnection;
 
+    private Long clientId;
+    private Long deviceId;
+    private Long historyId;
+    private Long costsId;
+    
     public BackendFasade() throws IOException, SQLException {
 
         this.initConnection();
+        this.initIds();
 
         this.structureRoot = new RootHierarchy(null, null);
 
@@ -56,59 +63,143 @@ public class BackendFasade {
         this.databaseConnection = new DatabaseConnection(this.config);
     }
 
-    public List<ClientEntity> loadAllClients() throws SQLException {
+    private void initIds() {
+        this.clientId = null;
+        this.deviceId = null;
+        this.historyId = null;
+        this.costsId = null;
+    }
+
+    public List<List<String>> loadAllClients() throws SQLException {
         if (this.structureRoot.getChilds() == null) {
             this.structureRoot
                     .setChilds(this.clientsFactory.generateEntities());
         }
 
         return this.structureRoot.getChilds().stream()
-                .map(Hierarchy::getData)
+                .map((element) -> element.getData().show())
                 .collect(Collectors.toList());
     }
 
-    public List<DeviceEntity> loadDevices(long clientId) throws SQLException {
-        if (this.structureRoot.getChildByID(clientId).getChilds() == null) {
-            this.structureRoot.getChildByID(clientId)
-                .setChilds(this.devicesFactory.generateEntities());
+    public List<List<String>> loadDevices() throws SQLException {
+        ClientHierarchy clientHier = this.structureRoot.getChildByID(clientId);
+        if (clientHier.getChilds() == null) {
+            clientHier.setChilds(this.devicesFactory.generateEntities());
         }
 
-        return this.structureRoot.getChildByID(clientId).getChilds().stream()
-                .map(Hierarchy::getData)
+        return clientHier.getChilds().stream()
+                .map(element -> element.getData().show())
                 .collect(Collectors.toList());
     }
 
 
-    public List<HistoryEntity> loadHistory(long clientId, long deviceId) throws SQLException {
-        if (this.structureRoot.getChildByID(clientId).getChildByID(deviceId).getChilds() == null) {
-            this.structureRoot.getChildByID(clientId).getChildByID(deviceId)
-                    .setChilds(this.historyFactory.generateEntities());
-        }
+    public List<List<String>> loadHistory() throws SQLException {
 
-        return this.structureRoot.getChildByID(clientId).getChildByID(deviceId).getChilds().stream()
-                .map(Hierarchy::getData)
-                .collect(Collectors.toList());
-    }
-
-    public List<CostEntity> loadCosts(long clientId, 
-        long deviceId, long historyId) throws SQLException {
-
-        if (this.structureRoot
+        DeviceHierarchy deviceHier = this.structureRoot
             .getChildByID(clientId)
-            .getChildByID(deviceId)
-            .getChildByID(historyId)
-            .getChilds() == null) {
+            .getChildByID(deviceId);
 
-            this.structureRoot.getChildByID(clientId).getChildByID(deviceId).getChildByID(historyId)
-                    .setChilds(this.costsFactory.generateEntities());
+        if (deviceHier.getChilds() == null) {
+            deviceHier.setChilds(this.historyFactory.generateEntities());
         }
 
-        return this.structureRoot
-            .getChildByID(clientId)
-            .getChildByID(deviceId)
-            .getChildByID(historyId)
-            .getChilds().stream()
-                .map(Hierarchy::getData)
+        return deviceHier.getChilds().stream()
+                .map(element -> element.getData().show())
                 .collect(Collectors.toList());
+    }
+
+    public List<List<String>> loadCosts() throws SQLException {
+
+        HistoryHierarchy historyHier = this.structureRoot
+            .getChildByID(this.clientId)
+            .getChildByID(this.deviceId)
+            .getChildByID(this.historyId);
+
+        if (historyHier.getChilds() == null) {
+            historyHier.setChilds(this.costsFactory.generateEntities());
+        }
+
+        return historyHier.getChilds().stream()
+            .map(element -> element.getData().show())
+            .collect(Collectors.toList());
+    }
+
+    public void addClient(Map<String, String> data) throws SQLException {
+        this.clientsFactory.getEntityFactory().deserializeMap(data);
+        this.structureRoot.getChilds().add(this.clientsFactory.getEntityFactory().getHierarchy());
+        this.clientsFactory.saveEntity(clientId);
+    }
+
+    public Map<String, String> getClientMap() {
+        if (this.clientId == null) {
+            this.clientsFactory.getEntityFactory().createEmpty();
+        }
+    
+        return this.clientsFactory.getEntityFactory().serialize();
+    }
+
+    public void addDevice(Map<String, String> data) throws SQLException {
+        this.devicesFactory.getEntityFactory().deserializeMap(data);
+        this.structureRoot.getChildByID(this.clientId).getChilds()
+            .add(this.devicesFactory.getEntityFactory().getHierarchy());
+        
+        this.devicesFactory.saveEntity(this.deviceId);
+    }
+
+    public Map<String, String> getDeviceMap() {
+        if (this.deviceId == null) {
+            this.devicesFactory.getEntityFactory().createEmpty();
+        }
+    
+        return this.devicesFactory.getEntityFactory().serialize();
+    }
+
+    public void addHistory(Map<String, String> data) throws SQLException {
+        this.historyFactory.getEntityFactory().deserializeMap(data);
+        this.structureRoot.getChildByID(this.clientId).getChildByID(this.deviceId).getChilds()
+            .add(this.historyFactory.getEntityFactory().getHierarchy());
+        
+        this.historyFactory.saveEntity(this.historyId);
+    }
+
+    public Map<String, String> getHistoryMap() {
+        if (this.historyId == null) {
+            this.historyFactory.getEntityFactory().createEmpty();
+        }
+    
+        return this.historyFactory.getEntityFactory().serialize();
+    }
+
+    public void addCost(Map<String, String> data) throws SQLException {
+        this.costsFactory.getEntityFactory().deserializeMap(data);
+        this.structureRoot.getChildByID(this.clientId)
+            .getChildByID(this.deviceId).getChildByID(this.historyId)
+            .getChilds().add(this.costsFactory.getEntityFactory().getHierarchy());
+        
+        this.costsFactory.saveEntity(this.costsId);
+    }
+
+    public Map<String, String> getCostMap() {
+        if (this.costsFactory == null) {
+            this.costsFactory.getEntityFactory().createEmpty();
+        }
+    
+        return this.costsFactory.getEntityFactory().serialize();
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    public void setDeviceId(Long deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public void setHistoryId(Long historyId) {
+        this.historyId = historyId;
+    }
+
+    public void setCostsId(Long costsId) {
+        this.costsId = costsId;
     }
 }

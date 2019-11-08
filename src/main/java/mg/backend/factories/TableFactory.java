@@ -1,8 +1,13 @@
 package mg.backend.factories;
 
-import mg.backend.database.DatabaseContract;
+import java.util.Map;
 
-public abstract class TableFactory<T, H> implements DatabaseContract {
+import mg.backend.database.DatabaseContract;
+import mg.backend.datastructure.Hierarchy;
+import mg.backend.entities.Entity;
+
+public abstract class TableFactory<T extends Entity, H extends Hierarchy<?,?>> 
+    implements DatabaseContract {
     
     private String tableName;
     protected T entity;
@@ -12,12 +17,20 @@ public abstract class TableFactory<T, H> implements DatabaseContract {
     }
 
     public String getTableName() {
-        return tableName;
+        return this.tableName;
     }
-    
+
     public T getEntity() {
         return this.entity;
     }
+
+    public void setEntity(T entity) {
+        this.entity = entity;
+    }
+
+    public abstract T createEmpty(); 
+
+    public abstract void deserializeMap(Map<String, String> data);
 
     public abstract H getHierarchy();
 }

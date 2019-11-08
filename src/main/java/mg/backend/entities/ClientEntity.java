@@ -1,5 +1,8 @@
 package mg.backend.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ClientEntity extends Entity {
 
     private String address;
@@ -102,13 +105,17 @@ public class ClientEntity extends Entity {
     }
 
     @Override
-    public String show() {
-        return "id: " + this.id + "\n"
-            + "first name: " + this.firstName + "\n"
-            + "last name: " + this.surname + "\n" 
-            + "address: " + this.address + "\n" 
-            + "email: " + this.email + "\n"
-            + "phone: " + this.phone + "\n";
+    public List<String> show() {
+        List<String> result = new ArrayList<>();
+    
+        result.add(String.valueOf(this.id));
+        result.add(this.firstName);
+        result.add(this.surname);
+        result.add(this.email);
+        result.add(this.phone);
+        result.add(this.description);
+
+        return result;
     }
 
     public static class Builder {

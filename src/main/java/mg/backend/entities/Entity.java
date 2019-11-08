@@ -1,5 +1,7 @@
 package mg.backend.entities;
 
+import java.util.List;
+
 public abstract class Entity {
 
     protected String name;
@@ -52,6 +54,6 @@ public abstract class Entity {
         return parentId;
     }
     
-    public abstract String show();
+    public abstract List<String> show();
 
 }

@@ -1,7 +1,10 @@
 package mg.backend.entities;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class HistoryEntity extends Entity {
 
@@ -9,11 +12,19 @@ public class HistoryEntity extends Entity {
     private Date acceptanceDate;
     private Date dueDate;
 
-    public HistoryEntity() throws Exception {
+    public HistoryEntity() {
         super();
-        Date emptyAcceptanceDate = dateFormat.parse("1970-01-01");
-        Date emptyDueDate = dateFormat.parse("1970-01-01");
-        this.init(emptyAcceptanceDate, emptyDueDate);
+        try {
+            Date emptyAcceptanceDate = dateFormat.parse("1970-01-01");
+            Date emptyDueDate = dateFormat.parse("1970-01-01");
+            this.init(emptyAcceptanceDate, emptyDueDate);
+            
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+       
+     
     }
 
     private HistoryEntity(long id, long parentId, String name, Date acceptanceDate, 
@@ -57,9 +68,16 @@ public class HistoryEntity extends Entity {
     }
     
     @Override
-    public String show() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<String> show() {
+        List<String> result = new ArrayList<>();
+        
+        result.add(String.valueOf(this.id)); 
+        result.add(this.name); 
+        result.add(acceptanceDate.toString());
+        result.add(dueDate.toString()); 
+        result.add(description); 
+
+        return result;
     }
 
     public static class Builder {

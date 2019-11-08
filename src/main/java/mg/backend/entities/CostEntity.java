@@ -1,5 +1,8 @@
 package mg.backend.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CostEntity extends Entity {
     
     private double price;
@@ -58,9 +61,17 @@ public class CostEntity extends Entity {
     }
 
     @Override
-    public String show() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<String> show() {
+        List<String> result = new ArrayList<>();
+
+        result.add(String.valueOf(this.id));
+        result.add(this.name);
+        result.add(String.valueOf(this.price));
+        result.add(String.valueOf(this.vat));
+        result.add(String.valueOf(this.discount));
+        result.add(this.description);
+
+        return result;
     }
 
     public static class Builder {

@@ -1,5 +1,8 @@
 package mg.backend.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DeviceEntity extends Entity {
 
     private String serialNumber;
@@ -35,9 +38,16 @@ public class DeviceEntity extends Entity {
     }
 
     @Override
-    public String show() {
-        // TODO Auto-generated method stub
-        return null;
+    public List<String> show() {
+        
+        List<String> result = new ArrayList<>();
+
+        result.add(String.valueOf(this.id)); 
+        result.add(name); 
+        result.add(serialNumber);
+        result.add(description);
+
+        return result;
     }
 
     public static class Builder {

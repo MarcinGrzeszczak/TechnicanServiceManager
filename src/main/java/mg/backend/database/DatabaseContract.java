@@ -2,10 +2,11 @@ package mg.backend.database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 
 public interface DatabaseContract {
     
-    public void serialize();
+    public  Map<String, String> serialize();
 
-    void deserialize(ResultSet data) throws SQLException;
+    public void deserialize(ResultSet data) throws SQLException;
 }

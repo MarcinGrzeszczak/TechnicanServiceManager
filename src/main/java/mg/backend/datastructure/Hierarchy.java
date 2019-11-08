@@ -1,11 +1,11 @@
 package mg.backend.datastructure;
 
-import mg.backend.entities.Entity;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Hierarchy<T extends Entity,E extends Hierarchy> {
+import mg.backend.entities.Entity;
+
+public class Hierarchy<T extends Entity,E extends Hierarchy<?,?>> {
     private T data;
     private List<E> childs;
 
@@ -30,8 +30,10 @@ public class Hierarchy<T extends Entity,E extends Hierarchy> {
         List<E> result = childs.stream()
                 .filter((child) -> child.getData().getId() == id)
                 .collect(Collectors.toList());
-        if(result.isEmpty())
+        
+        if (result.isEmpty()) {
             return null;
+        }
 
         return result.get(0);
     }
