@@ -24,6 +24,13 @@ public class MainScreen extends Screen {
     }
 
     @Override
+    public void select() {
+        super.select();
+        this.backend.setClientId((long) super.selectedId);
+        super.callback.selection(super.selectedId);
+    }
+
+    @Override
     void displayTable() {
         List<List<String>> clients;
         try {

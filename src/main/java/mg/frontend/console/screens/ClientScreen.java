@@ -35,7 +35,7 @@ public class ClientScreen extends Screen {
     @Override
     public void select() {
         super.select();
-        this.backend.setClientId((long) super.selectedId);
+        this.backend.setDeviceId((long) super.selectedId);
         super.callback.selection(super.selectedId);
     }
 

@@ -32,14 +32,7 @@ public class CostScreen extends Screen {
         this.backend.setCostsId(null);
         super.back();
     }
-
-    @Override
-    public void select() {
-        super.select();
-        this.backend.setCostsId((long) super.selectedId);
-        super.callback.selection(super.selectedId);
-    }
-
+    
     private void editCosts() {
         Map<String, String> data = super.add(this.backend.getCostMap());
         try {

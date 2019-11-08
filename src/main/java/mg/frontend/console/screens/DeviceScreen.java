@@ -35,7 +35,7 @@ public class DeviceScreen extends Screen {
     @Override
     public void select() {
         super.select();
-        this.backend.setDeviceId((long) super.selectedId);
+        this.backend.setHistoryId((long) super.selectedId);
         super.callback.selection(super.selectedId);
     }
 

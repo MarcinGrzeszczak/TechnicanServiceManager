@@ -35,7 +35,7 @@ public class HistoryScreen extends Screen {
     @Override
     public void select() {
         super.select();
-        this.backend.setHistoryId((long) super.selectedId);
+        this.backend.setCostsId((long) super.selectedId);
         super.callback.selection(super.selectedId);
     }
 
