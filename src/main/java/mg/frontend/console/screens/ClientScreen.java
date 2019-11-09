@@ -10,6 +10,8 @@ import mg.frontend.console.Menu;
 
 public class ClientScreen extends Screen {
 
+    private List<List<String>> devices;
+
     public ClientScreen(BackendFasade backend, Scanner scanner) {
         super(backend, scanner);
         
@@ -41,15 +43,8 @@ public class ClientScreen extends Screen {
 
     @Override
     void displayTable() {
-        List<List<String>> devices;
-        try {
-            devices = super.backend.loadDevices();
-            super.showTable(devices);
-        } catch (SQLException e) {
-            System.out.println("Brak urzadzen");
-            // TODO Auto-generated catch block
-            //e.printStackTrace();
-        }
+        
+        super.showTable(devices);
         super.displayMenu();
     }
 
@@ -75,5 +70,15 @@ public class ClientScreen extends Screen {
         }
 
         super.displayMenu();
+    }
+
+    @Override
+    protected void reloadTable() {
+        try {
+            this.devices = super.backend.loadDevices();
+        } catch (SQLException e) {
+            System.out.println("Blad ladowania urzadzen");
+            //e.printStackTrace();
+        }
     }
 }

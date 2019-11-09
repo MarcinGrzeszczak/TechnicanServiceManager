@@ -49,23 +49,35 @@ public class DataStructureFactory<T extends TableFactory<?,H>, H extends Hierarc
                 + " RETURNING id";
         }
 
-        this.databaseConnection.sendQuery(query, null);
+        this.databaseConnection.sendQuery(query, (resultSet) -> {
+            try {
+                this.entityFactory.entity.setId(resultSet.getLong(1));
+            } catch (SQLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        });
     }
 
-    public List<H> generateEntities() throws SQLException {
+    public List<H> generateEntities(Long parentID) throws SQLException {
         
         this.hierarchyList = new ArrayList<>();
 
-        this.databaseConnection.sendQuery(
-            "SELECT * FROM " + this.entityFactory.getTableName(), (data) -> {
-                try {
-                    this.entityFactory.deserialize(data);
-                    this.hierarchyList.add(this.entityFactory.getHierarchy());
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-                
-            });
+        String query =  "SELECT * FROM " + this.entityFactory.getTableName();
+
+        if (parentID != null) {
+            query += " WHERE parent_id=" + parentID.longValue();
+        }
+
+        this.databaseConnection.sendQuery(query, (data) -> {
+            try {
+                this.entityFactory.deserialize(data);
+                this.hierarchyList.add(this.entityFactory.getHierarchy());
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            
+        });
         return this.hierarchyList;
     }
 }

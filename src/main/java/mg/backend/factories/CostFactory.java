@@ -36,7 +36,7 @@ public class CostFactory extends TableFactory<CostEntity, CostsHierarchy> {
     @Override
     public Map<String, String> serialize() {
         Map<String, String> data = new LinkedHashMap<>();
-        data.put("parentID", String.valueOf(super.entity.getParentId()));
+        data.put("parent_id", String.valueOf(super.entity.getParentId()));
         data.put("name", super.entity.getName());
         data.put("price", String.valueOf(super.entity.getPrice()));
         data.put("vat", String.valueOf(super.entity.getVat()));
@@ -49,7 +49,7 @@ public class CostFactory extends TableFactory<CostEntity, CostsHierarchy> {
     @Override
     public void deserializeMap(Map<String, String> data) {
         super.entity = CostEntity.builder()
-            .setParentId(Long.parseLong(data.get("parentID")))
+            .setParentId(Long.parseLong(data.get("parent_id")))
             .setName(data.get("name"))
             .setPrice(Double.parseDouble(data.get("price")))
             .setVat(Double.parseDouble(data.get("vat")))

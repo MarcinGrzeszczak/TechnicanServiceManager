@@ -73,7 +73,7 @@ public class BackendFasade {
     public List<List<String>> loadAllClients() throws SQLException {
         if (this.structureRoot.getChilds() == null) {
             this.structureRoot
-                    .setChilds(this.clientsFactory.generateEntities());
+                    .setChilds(this.clientsFactory.generateEntities(null));
         }
 
         return this.structureRoot.getChilds().stream()
@@ -84,7 +84,7 @@ public class BackendFasade {
     public List<List<String>> loadDevices() throws SQLException {
         ClientHierarchy clientHier = this.structureRoot.getChildByID(clientId);
         if (clientHier.getChilds() == null) {
-            clientHier.setChilds(this.devicesFactory.generateEntities());
+            clientHier.setChilds(this.devicesFactory.generateEntities(this.clientId));
         }
 
         return clientHier.getChilds().stream()
@@ -100,7 +100,7 @@ public class BackendFasade {
             .getChildByID(deviceId);
 
         if (deviceHier.getChilds() == null) {
-            deviceHier.setChilds(this.historyFactory.generateEntities());
+            deviceHier.setChilds(this.historyFactory.generateEntities(this.deviceId));
         }
 
         return deviceHier.getChilds().stream()
@@ -116,7 +116,7 @@ public class BackendFasade {
             .getChildByID(this.historyId);
 
         if (historyHier.getChilds() == null) {
-            historyHier.setChilds(this.costsFactory.generateEntities());
+            historyHier.setChilds(this.costsFactory.generateEntities(this.historyId));
         }
 
         return historyHier.getChilds().stream()
@@ -180,7 +180,7 @@ public class BackendFasade {
     }
 
     public Map<String, String> getCostMap() {
-        if (this.costsFactory == null) {
+        if (this.costsId == null) {
             this.costsFactory.getEntityFactory().createEmpty();
         }
     

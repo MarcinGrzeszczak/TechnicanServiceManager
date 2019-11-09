@@ -9,6 +9,7 @@ import mg.backend.BackendFasade;
 import mg.frontend.console.Menu;
 
 public class DeviceScreen extends Screen {
+    private List<List<String>> history;
 
     public DeviceScreen(BackendFasade backend, Scanner scanner) {
         super(backend, scanner);
@@ -41,14 +42,7 @@ public class DeviceScreen extends Screen {
 
     @Override
     void displayTable() {
-        List<List<String>> history;
-        try {
-            history = super.backend.loadHistory();
-            super.showTable(history);
-        } catch (SQLException e) {
-            System.out.println("Brak historii");
-            //e.printStackTrace();
-        }
+        super.showTable(history);
         super.displayMenu();
     }
 
@@ -69,10 +63,20 @@ public class DeviceScreen extends Screen {
         try {
             this.backend.addHistory(data);
         } catch (SQLException e) {
-            System.out.println("Problem z zapisem historii");
-            //e.printStackTrace();
+            //System.out.println("Problem z zapisem historii");
+            e.printStackTrace();
         }
 
         super.displayMenu();
+    }
+
+    @Override
+    protected void reloadTable() {
+        try {
+            this.history = super.backend.loadHistory();
+        } catch (SQLException e) {
+            System.out.println("Blad ladowania historii");
+            //e.printStackTrace();
+        }
     }
 }

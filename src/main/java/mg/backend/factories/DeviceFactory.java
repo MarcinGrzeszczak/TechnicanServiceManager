@@ -35,9 +35,9 @@ public class DeviceFactory extends TableFactory<DeviceEntity, DeviceHierarchy> {
     public Map<String, String> serialize() {
         Map<String, String> data = new LinkedHashMap<>();
 
-        data.put("parentID", String.valueOf(super.entity.getParentId()));
+        data.put("parent_id", String.valueOf(super.entity.getParentId()));
         data.put("name", super.entity.getName());
-        data.put("serialNumber", super.entity.getSerialNumber());
+        data.put("serial_number", super.entity.getSerialNumber());
         data.put("description", super.entity.getDescription());
 
         return data;
@@ -46,9 +46,9 @@ public class DeviceFactory extends TableFactory<DeviceEntity, DeviceHierarchy> {
     @Override
     public void deserializeMap(Map<String, String> data) {
         super.entity = DeviceEntity.builder()
-            .setParentId(Long.parseLong(data.get("parentID")))
+            .setParentId(Long.parseLong(data.get("parent_id")))
             .setName(data.get("name"))
-            .setSerialNumber(data.get("serialNumber"))
+            .setSerialNumber(data.get("serial_number"))
             .setDescription(data.get("description"))
             .build();
 

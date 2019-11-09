@@ -39,10 +39,10 @@ public class HistoryFactory extends TableFactory<HistoryEntity, HistoryHierarchy
     @Override
     public Map<String, String> serialize() {
         Map<String, String> data = new LinkedHashMap<>();
-        data.put("parentID", String.valueOf(super.entity.getParentId()));
+        data.put("parent_id", String.valueOf(super.entity.getParentId()));
         data.put("name", super.entity.getName());
-        data.put("acceptanceDate", super.entity.getAcceptanceDate().toString());
-        data.put("dueDate", super.entity.getDueDate().toString());
+        data.put("acceptance_date", super.entity.getAcceptanceDate().toString());
+        data.put("due_date", super.entity.getDueDate().toString());
         data.put("description", super.entity.getDescription());
 
         return data;
@@ -52,10 +52,10 @@ public class HistoryFactory extends TableFactory<HistoryEntity, HistoryHierarchy
     public void deserializeMap(Map<String, String> data) {
         try {
             super.entity = HistoryEntity.builder()
-                .setParentId(Long.valueOf(data.get("parentID")))
+                .setParentId(Long.valueOf(data.get("parent_id")))
                 .setName(data.get("name"))
-                .setAcceptanceDate(dateFormat.parse(data.get("acceptanceDate")))
-                .setDueDate(dateFormat.parse(data.get("dueDate")))
+                .setAcceptanceDate(dateFormat.parse(data.get("acceptance_date")))
+                .setDueDate(dateFormat.parse(data.get("due_date")))
                 .setDescription(data.get("description")).build();
         } catch (NumberFormatException e) {
             // TODO Auto-generated catch block

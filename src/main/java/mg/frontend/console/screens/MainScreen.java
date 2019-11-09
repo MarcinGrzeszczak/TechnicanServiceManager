@@ -9,6 +9,7 @@ import mg.backend.BackendFasade;
 import mg.frontend.console.Menu;
 
 public class MainScreen extends Screen {
+    private List<List<String>> clients;
 
     public MainScreen(BackendFasade backend, Scanner scanner) {
         super(backend, scanner);
@@ -16,7 +17,7 @@ public class MainScreen extends Screen {
         Menu clientMenu = Menu.builder().setScanner(scanner).setHeader("Menu Glowne")
             .addOption("Pokaz liste klientow", this::displayTable)
             .addOption("Dodaj klienta", this::addClient)
-            .addOption("Zaznacz klienta", super::select)
+            .addOption("Zaznacz klienta", this::select)
             .build();
 
         super.setMenu(clientMenu);
@@ -32,15 +33,7 @@ public class MainScreen extends Screen {
 
     @Override
     void displayTable() {
-        List<List<String>> clients;
-        try {
-            clients = super.backend.loadAllClients();
-            super.showTable(clients);
-        } catch (SQLException e) {
-            System.out.println("Brak klientow");
-            //e.printStackTrace();
-        }
-
+        super.showTable(clients);
         super.displayMenu();
     }
 
@@ -54,6 +47,16 @@ public class MainScreen extends Screen {
         }
 
         super.displayMenu();
+    }
+
+    @Override
+    protected void reloadTable() {
+        try {
+            this.clients = super.backend.loadAllClients();
+        } catch (SQLException e) {
+            System.out.println("Blad ladowania klientow");
+            //e.printStackTrace();
+        }
     }
 
 }

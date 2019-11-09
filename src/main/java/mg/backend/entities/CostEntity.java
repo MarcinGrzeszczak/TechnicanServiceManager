@@ -29,7 +29,9 @@ public class CostEntity extends Entity {
     }
 
     private void init(double price, double vat, double discount) {
-
+        this.price = price;
+        this.vat = vat;
+        this.discount = discount;
     }
 
     public double getDiscount() {

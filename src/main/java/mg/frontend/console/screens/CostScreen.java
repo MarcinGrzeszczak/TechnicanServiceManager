@@ -1,7 +1,6 @@
 package mg.frontend.console.screens;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -43,5 +42,10 @@ public class CostScreen extends Screen {
         }
 
         super.displayMenu();
+    }
+
+    @Override
+    protected void reloadTable() {
+
     }
 }

@@ -9,6 +9,7 @@ import mg.backend.BackendFasade;
 import mg.frontend.console.Menu;
 
 public class HistoryScreen extends Screen {
+    private List<List<String>> costs;
 
     public HistoryScreen(BackendFasade backend, Scanner scanner) {
         super(backend, scanner);
@@ -40,15 +41,8 @@ public class HistoryScreen extends Screen {
     }
 
     @Override
-    void displayTable() {
-        List<List<String>> costs;
-        try {
-            costs = super.backend.loadCosts();
-            super.showTable(costs);
-        } catch (SQLException e) {
-            System.out.println("Brak kosztow");
-            //e.printStackTrace();
-        }
+    void displayTable() {       
+        super.showTable(costs);
         super.displayMenu();
     }
 
@@ -74,5 +68,16 @@ public class HistoryScreen extends Screen {
         }
 
         super.displayMenu();
+    }
+
+    @Override
+    protected void reloadTable() {
+        try {
+            this.costs = super.backend.loadCosts();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
     }
 }

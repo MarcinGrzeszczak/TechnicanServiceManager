@@ -33,6 +33,7 @@ public abstract class Screen {
     }
 
     public void displayMenu() {
+        this.reloadTable();
         this.menu.show();
 
     }
@@ -54,7 +55,9 @@ public abstract class Screen {
     abstract void displayTable();
 
     protected String showTable(List<List<String>> table) {
-
+        if (table.size() == 0) {
+            return "Tablica pusta";
+        }
         List<List<String>> transposedArray = this.transpose().apply(table);
         
         List<List<String>> editedArray = transposedArray.stream()
@@ -131,4 +134,6 @@ public abstract class Screen {
         }
         return data;
     }
+
+    protected abstract void reloadTable();
 }
