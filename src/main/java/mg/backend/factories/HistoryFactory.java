@@ -58,10 +58,8 @@ public class HistoryFactory extends TableFactory<HistoryEntity, HistoryHierarchy
                 .setDueDate(dateFormat.parse(data.get("due_date")))
                 .setDescription(data.get("description")).build();
         } catch (NumberFormatException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

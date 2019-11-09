@@ -75,7 +75,6 @@ public class HistoryScreen extends Screen {
         try {
             this.costs = super.backend.loadCosts();
         } catch (SQLException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

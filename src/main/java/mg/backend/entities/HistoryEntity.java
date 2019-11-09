@@ -20,7 +20,6 @@ public class HistoryEntity extends Entity {
             this.init(emptyAcceptanceDate, emptyDueDate);
             
         } catch (ParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
        
