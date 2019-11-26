@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 import java.util.Map;
 
@@ -13,10 +14,13 @@ public class ContentComponent extends GUIComponent<BorderLayout> {
 
    private JTable jTable;
    private TableModel tableModel;
+   private IContentListener listener;
+
     public ContentComponent(Map<String, String> tableMap, IContentListener listener) {
         super();
         this.tableModel = new TableModel(tableMap);
         this.jTable = new JTable(tableModel);
+        this.listener = listener;
         this.jTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -28,6 +32,26 @@ public class ContentComponent extends GUIComponent<BorderLayout> {
             }
         });
         super.createContainer();
+
+        this.jTable.addMouseListener(new MouseList());
+    }
+
+    class MouseList extends MouseAdapter {
+        public void mousePressed(MouseEvent e) {
+            int r = jTable.rowAtPoint(e.getPoint());
+            jTable.setRowSelectionInterval(r,r);
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            if (e.isPopupTrigger())
+                doPop(e);
+        }
+
+        private void doPop(MouseEvent e) {
+            listener.rightClick(e);
+        }
     }
 
     public int getselectedRowId() {

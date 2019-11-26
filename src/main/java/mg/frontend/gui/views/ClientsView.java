@@ -1,11 +1,15 @@
 package mg.frontend.gui.views;
 
+import javafx.geometry.Side;
+import javafx.scene.control.ContextMenu;
 import mg.backend.BackendFasade;
 import mg.frontend.gui.customcomponents.*;
 import mg.frontend.gui.editViews.ClientEditView;
 import mg.frontend.gui.editViews.IEditViewListener;
 
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -28,8 +32,8 @@ public class ClientsView  implements IContentListener, ITableView, ButtonsListen
         this.animListener = animListener;
         this.childView.setParentView(this);
         this.component = new ContentComponent(this.tableMap, this);
-    }
 
+    }
     @Override
     public void setParentView(ITableView parentView) {
     }
@@ -39,6 +43,14 @@ public class ClientsView  implements IContentListener, ITableView, ButtonsListen
         backend.setClientId((long)id);
         childView.load();
         this.listener.nextCardListener((ButtonsListeners) childView);
+    }
+
+    @Override
+    public void rightClick(MouseEvent e) {
+        RightContextMenu contextMenu = new RightContextMenu();
+        contextMenu.addListeners(this::addListener, this::editListener, this::deleteListener);
+
+        contextMenu.show(e.getComponent(),e.getX(), e.getY());
     }
 
     @Override

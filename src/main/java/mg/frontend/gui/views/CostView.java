@@ -1,13 +1,11 @@
 package mg.frontend.gui.views;
 
 import mg.backend.BackendFasade;
-import mg.frontend.gui.customcomponents.ContentComponent;
-import mg.frontend.gui.customcomponents.IContentListener;
-import mg.frontend.gui.customcomponents.ITableContainerListener;
-import mg.frontend.gui.customcomponents.TableContainer;
+import mg.frontend.gui.customcomponents.*;
 import mg.frontend.gui.editViews.CostEditView;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.Map;
 
@@ -60,6 +58,15 @@ public class CostView implements ITableView, IContentListener, ButtonsListeners 
     public ContentComponent getContentComponent() {
         return this.component;
     }
+
+    @Override
+    public void rightClick(MouseEvent e) {
+        RightContextMenu contextMenu = new RightContextMenu();
+        contextMenu.addListeners(this::addListener, this::editListener, this::deleteListener);
+
+        contextMenu.show(e.getComponent(),e.getX(), e.getY());
+    }
+
 
     @Override
     public void backListener() {
