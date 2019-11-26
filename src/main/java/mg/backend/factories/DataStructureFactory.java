@@ -41,7 +41,7 @@ public class DataStructureFactory<T extends TableFactory<?,H>, H extends Hierarc
                 + " RETURNING id";
 
         } else {
-            query = "UPATE " 
+            query = "UPDATE "
                 + this.entityFactory.getTableName()
                 + " SET " + names
                 + " = " + values
@@ -56,6 +56,16 @@ public class DataStructureFactory<T extends TableFactory<?,H>, H extends Hierarc
                 e.printStackTrace();
             }
         });
+    }
+
+    public void deleteEntity(Long id) {
+        String query = "DELETE FROM " + this.entityFactory.getTableName() + " WHERE id = " + id + "RETURNING id;";
+
+        try {
+            this.databaseConnection.sendQuery(query, null);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<H> generateEntities(Long parentID) throws SQLException {

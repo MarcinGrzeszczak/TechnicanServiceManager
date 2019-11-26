@@ -17,6 +17,9 @@ public class Hierarchy<T extends Entity,E extends Hierarchy<?,?>> {
     public T getData() {
         return data;
     }
+    public void setData(T data) {
+        this.data = data;
+    }
 
     public List<E> getChilds() {
         return childs;
@@ -24,6 +27,14 @@ public class Hierarchy<T extends Entity,E extends Hierarchy<?,?>> {
 
     public void setChilds(List<E> childs) {
         this.childs = childs;
+    }
+
+    public void removeChildById(long id) {
+        this.setChilds(this.getChilds().stream().filter(entity-> entity.getData().getId() != id).collect(Collectors.toList()));
+    }
+
+    public void removeChildByParentId(long parentId) {
+        this.setChilds(this.getChilds().stream().filter(entity-> entity.getData().getParentId() != parentId).collect(Collectors.toList()));
     }
 
     public E getChildByID(long id) {
