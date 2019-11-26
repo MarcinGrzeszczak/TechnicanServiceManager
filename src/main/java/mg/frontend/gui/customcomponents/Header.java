@@ -8,16 +8,19 @@ import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Header extends GUIComponent<GridLayout> {
 
     private List<Component> components;
+    private JMenuBar menuBar;
 
     public Header(int width, int height){
         super();
         super.panel.setMaximumSize(new Dimension(width, height));
         super.createContainer();
+        this.createMenu();
     }
 
     @Override
@@ -37,14 +40,21 @@ public class Header extends GUIComponent<GridLayout> {
 
     public void setAddListener(IHeaderListener addListener) {
         this.swapListener((JButton) this.components.get(1), addListener);
+        this.swapListener(this.menuBar.getMenu(1).getItem(0), addListener);
     }
 
     public void setEditListener(IHeaderListener editListener) {
         this.swapListener((JButton) this.components.get(2), editListener);
+        this.swapListener(this.menuBar.getMenu(1).getItem(1), editListener);
     }
 
     public void setDeleteListener(IHeaderListener deleteListener) {
         this.swapListener((JButton) this.components.get(3), deleteListener);
+        this.swapListener(this.menuBar.getMenu(1).getItem(2), deleteListener);
+    }
+
+    public JMenuBar getMenuBar() {
+        return menuBar;
     }
 
     private void swapListener(JButton button, IHeaderListener listener) {
@@ -52,6 +62,13 @@ public class Header extends GUIComponent<GridLayout> {
             button.removeActionListener(currentListener);
 
         button.addActionListener(e->listener.run());
+    }
+
+    private void swapListener(JMenuItem item, IHeaderListener listener) {
+        for(ActionListener currentListener: item.getActionListeners())
+            item.removeActionListener(currentListener);
+
+        item.addActionListener(e->listener.run());
     }
 
     @Override
@@ -85,5 +102,33 @@ public class Header extends GUIComponent<GridLayout> {
             button.setIcon(icon);
 
         return button;
+    }
+
+    private JMenu addToMenu(String menuName, List<String> items) {
+        JMenu menu = new JMenu(menuName);
+        for(String itemName : items){
+            JMenuItem menuItem = new JMenuItem(itemName);
+            menu.add(menuItem);
+        }
+        return menu;
+    }
+
+    private JMenuBar createMenu() {
+        this.menuBar = new JMenuBar();
+
+        List<String> fileItems = new ArrayList<>();
+        fileItems.add("Zakoncz");
+
+        List<String> editItems = new ArrayList<>();
+        editItems.add("Dodaj");
+        editItems.add("Edytuj");
+        editItems.add("Usun");
+
+        this.menuBar.add(addToMenu("Plik", fileItems));
+        this.menuBar.add(addToMenu("Edycja", editItems));
+
+        this.menuBar.getMenu(0).getItem(0).addActionListener((l)->System.exit(0));
+
+        return menuBar;
     }
 }

@@ -66,6 +66,7 @@ class Window extends JFrame implements ITableContainerListener, IAnimationListen
         mainPanel.add(tableContainer.getComponent());
         add(mainPanel);
 
+        setJMenuBar(header.getMenuBar());
         setVisible(true);
 
     }
