@@ -111,6 +111,7 @@ public class ClientEntity extends Entity {
         result.add(String.valueOf(this.id));
         result.add(this.firstName);
         result.add(this.surname);
+        result.add(this.address);
         result.add(this.email);
         result.add(this.phone);
         result.add(this.description);

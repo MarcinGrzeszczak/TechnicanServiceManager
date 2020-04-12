@@ -7,11 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import mg.backend.database.DatabaseConnection;
-import mg.backend.datastructure.ClientHierarchy;
-import mg.backend.datastructure.CostsHierarchy;
-import mg.backend.datastructure.DeviceHierarchy;
-import mg.backend.datastructure.HistoryHierarchy;
-import mg.backend.datastructure.RootHierarchy;
+import mg.backend.datastructure.*;
 import mg.backend.factories.ClientFactory;
 import mg.backend.factories.CostFactory;
 import mg.backend.factories.DataStructureFactory;
@@ -121,7 +117,11 @@ public class BackendFasade {
 
     public void addClient(Map<String, String> data) throws SQLException {
         this.clientsFactory.getEntityFactory().deserializeMap(data);
-        this.structureRoot.getChilds().add(this.clientsFactory.getEntityFactory().getHierarchy());
+        if(clientId != null)
+            this.structureRoot.getChildByID(clientId).setData(this.clientsFactory.getEntityFactory().getEntity());
+        else
+            this.structureRoot.getChilds().add(this.clientsFactory.getEntityFactory().getHierarchy());
+
         this.clientsFactory.saveEntity(clientId);
     }
 
@@ -129,14 +129,19 @@ public class BackendFasade {
         if (this.clientId == null) {
             this.clientsFactory.getEntityFactory().createEmpty();
         }
-    
+        else
+            this.clientsFactory.getEntityFactory().setEntity(this.structureRoot.getChildByID(clientId).getData());
+
         return this.clientsFactory.getEntityFactory().serialize();
     }
 
     public void addDevice(Map<String, String> data) throws SQLException {
         this.devicesFactory.getEntityFactory().deserializeMap(data);
-        this.structureRoot.getChildByID(this.clientId).getChilds()
-            .add(this.devicesFactory.getEntityFactory().getHierarchy());
+        if(this.deviceId != null)
+            this.structureRoot.getChildByID(clientId).getChildByID(deviceId).setData(this.devicesFactory.getEntityFactory().getEntity());
+        else
+            this.structureRoot.getChildByID(this.clientId).getChilds()
+                .add(this.devicesFactory.getEntityFactory().getHierarchy());
         
         this.devicesFactory.saveEntity(this.deviceId);
     }
@@ -145,14 +150,24 @@ public class BackendFasade {
         if (this.deviceId == null) {
             this.devicesFactory.getEntityFactory().createEmpty();
         }
-    
+        else
+            this.devicesFactory.getEntityFactory().setEntity(this.structureRoot
+                    .getChildByID(clientId)
+                    .getChildByID(deviceId)
+                    .getData());
+
         return this.devicesFactory.getEntityFactory().serialize();
     }
 
     public void addHistory(Map<String, String> data) throws SQLException {
         this.historyFactory.getEntityFactory().deserializeMap(data);
-        this.structureRoot.getChildByID(this.clientId).getChildByID(this.deviceId).getChilds()
-            .add(this.historyFactory.getEntityFactory().getHierarchy());
+
+        if(this.historyId != null)
+            this.structureRoot.getChildByID(this.clientId).getChildByID(this.deviceId).getChildByID(historyId)
+                .setData(this.historyFactory.getEntityFactory().getEntity());
+        else
+            this.structureRoot.getChildByID(this.clientId).getChildByID(this.deviceId).getChilds()
+                .add(this.historyFactory.getEntityFactory().getHierarchy());
         
         this.historyFactory.saveEntity(this.historyId);
     }
@@ -161,15 +176,27 @@ public class BackendFasade {
         if (this.historyId == null) {
             this.historyFactory.getEntityFactory().createEmpty();
         }
-    
+        else
+            this.historyFactory.getEntityFactory().setEntity(this.structureRoot
+                    .getChildByID(clientId)
+                    .getChildByID(deviceId)
+                    .getChildByID(historyId)
+                    .getData());
+
         return this.historyFactory.getEntityFactory().serialize();
     }
 
     public void addCost(Map<String, String> data) throws SQLException {
         this.costsFactory.getEntityFactory().deserializeMap(data);
-        this.structureRoot.getChildByID(this.clientId)
-            .getChildByID(this.deviceId).getChildByID(this.historyId)
-            .getChilds().add(this.costsFactory.getEntityFactory().getHierarchy());
+
+        if(this.costsId != null)
+            this.structureRoot.getChildByID(this.clientId)
+                    .getChildByID(this.deviceId).getChildByID(this.historyId).getChildByID(costsId)
+                    .setData(this.costsFactory.getEntityFactory().getEntity());
+        else
+            this.structureRoot.getChildByID(this.clientId)
+                .getChildByID(this.deviceId).getChildByID(this.historyId)
+                .getChilds().add(this.costsFactory.getEntityFactory().getHierarchy());
         
         this.costsFactory.saveEntity(this.costsId);
     }
@@ -178,8 +205,33 @@ public class BackendFasade {
         if (this.costsId == null) {
             this.costsFactory.getEntityFactory().createEmpty();
         }
+        else
+            this.costsFactory.getEntityFactory().setEntity(this.structureRoot
+                .getChildByID(clientId)
+                .getChildByID(deviceId)
+                .getChildByID(historyId)
+                .getChildByID(costsId)
+                .getData());
     
         return this.costsFactory.getEntityFactory().serialize();
+    }
+
+    public void deleteClient(long id){
+        this.clientsFactory.deleteEntity(id);
+
+        this.structureRoot.removeChildById(id);
+    }
+    public void deleteDevice(long id){
+        this.devicesFactory.deleteEntity(id);
+        this.structureRoot.getChildByID(clientId).removeChildById(id);
+    }
+    public void deleteHistory(long id){
+        this.historyFactory.deleteEntity(id);
+        this.structureRoot.getChildByID(clientId).getChildByID(deviceId).removeChildById(id);
+    }
+    public void deleteCost(long id){
+        this.costsFactory.deleteEntity(id);
+        this.structureRoot.getChildByID(clientId).getChildByID(deviceId).getChildByID(historyId).removeChildById(id);
     }
 
     public void setClientId(Long clientId) {
@@ -196,5 +248,21 @@ public class BackendFasade {
 
     public void setCostsId(Long costsId) {
         this.costsId = costsId;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public Long getDeviceId() {
+        return deviceId;
+    }
+
+    public Long getHistoryId() {
+        return historyId;
+    }
+
+    public Long getCostsId() {
+        return costsId;
     }
 }
